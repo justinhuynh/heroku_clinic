@@ -38,8 +38,14 @@ production:
   password: <%= ENV['HEROKU_CLINIC_DATABASE_PASSWORD'] %>
 ```
 
+##### Add `puma.rb` file
+
 ### Deployment!
 
 `heroku create`
 
 Type in `git remote -v` to ensure that an endpoint called `heroku` has been created.
+
+`git push heroku master`
+`heroku run rake db:migrate`
+`heroku run rake db:seed`
