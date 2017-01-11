@@ -38,7 +38,19 @@ production:
   password: <%= ENV['HEROKU_CLINIC_DATABASE_PASSWORD'] %>
 ```
 
-##### Add `puma.rb` file
+##### Add `config/puma.rb` file
+
+```
+workers Integer(ENV['WEB_CONCURRENCY'] || 2)
+threads_count = Integer(ENV['MAX_THREADS'] || 5)
+threads threads_count, threads_count
+
+preload_app!
+
+rackup      DefaultRackup
+port        ENV['PORT']     || 3000
+environment ENV['RACK_ENV'] || 'development'
+```
 
 ### Deployment!
 
@@ -47,5 +59,7 @@ production:
 Type in `git remote -v` to ensure that an endpoint called `heroku` has been created.
 
 `git push heroku master`
-`heroku run rake db:migrate`
+`heroku run rake db:create`
+`heroku run rails db:migrate`
 `heroku run rake db:seed`
+`heroku logs -t` to check out any errors
